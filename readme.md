@@ -19,14 +19,14 @@ deployment use the same underlying infrastructure.
 
 ## What's been replaced
 
-| Original (AWS managed) | Rebuild (containerised) |
-|------------------------|------------------------|
-| AWS MSK (Kafka) | Apache Kafka in Docker (KRaft) |
-| AWS Kinesis | Apache Kafka (handles streaming too) |
-| AWS S3 | MinIO (S3-compatible local object storage) |
-| AWS MWAA (Airflow) | Apache Airflow in Docker |
-| AWS API Gateway | FastAPI (Python) |
-| Databricks notebooks | Jupyter notebooks in Docker |
+| Original (AWS managed) | Rebuild (containerised) | Status |
+|------------------------|------------------------|--------|
+| AWS MSK (Kafka) | Apache Kafka in Docker (KRaft) | ✅ Complete |
+| AWS Kinesis | Apache Kafka (handles streaming too) | ✅ Complete |
+| AWS S3 | MinIO (S3-compatible local object storage) | 🔜 Sprint 3 |
+| AWS MWAA (Airflow) | Apache Airflow in Docker | 🔜 Sprint 5 |
+| AWS API Gateway | FastAPI (Python) | 🔜 Sprint 2 |
+| Databricks notebooks | Jupyter notebooks in Docker | 🔜 Sprint 6 |
 
 ## Running Kafka locally
 ```bash

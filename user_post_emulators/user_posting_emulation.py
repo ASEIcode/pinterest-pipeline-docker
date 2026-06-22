@@ -1,15 +1,11 @@
 from faker import Faker #import the Faker library to generate fake data for testing purposes
-from kafka import KafkaProducer #import the KafkaProducer class from the kafka library to send messages to a Kafka topic
 import json #import the json library to convert Python objects to JSON format
 import time #import the time library to add delays between sending messages
 import random #import the random library to generate random numbers for delays and data generation
-
+import requests #import the requests library to sed data to FastAPI endpoints
 fake= Faker() #create an instance of the Faker class to generate fake data
 
-producer = KafkaProducer(
-    bootstrap_servers='localhost:9092',
-    value_serializer=lambda x: json.dumps(x).encode('utf-8')
-)
+
 
 def generate_fake_pin_result():#define a function that generates a fake pin result using the Faker library
     return {"index": fake.random_int(min=1, max=1000),
@@ -44,12 +40,14 @@ while True:
     geo_result = generate_fake_geo_result()#generate a fake geo result
     user_result = generate_fake_user_result()#generate a fake user result
 
-    producer.send('pinterest.pin', value=pin_result)#send the fake pin result to the Kafka topic 'pinterest.pin'
-    producer.send('pinterest.geo', value=geo_result)#send the fake geo result to the Kafka topic 'pinterest.geo'
-    producer.send('pinterest.user', value=user_result)#send the fake user result to the Kafka topic 'pinterest.user'
+    #send the generated data to the FastAPI endpoints using POST requests
 
-    print(f"Sent pin: {pin_result['unique_id']}")
-    print(f"Sent geo: {geo_result['country']}")
-    print(f"Sent user: {user_result['ind']}")
+    r1 = requests.post("http://localhost:8000/pindata", json=pin_result)
+    r2 = requests.post("http://localhost:8000/geodata", json=geo_result)
+    r3 = requests.post("http://localhost:8000/userdata", json=user_result)         
+
+    print(r1.status_code, r1.text)
+    print(r2.status_code, r2.text)
+    print(r3.status_code, r3.text)
     
     time.sleep(random.uniform(0.5, 2))
